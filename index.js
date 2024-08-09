@@ -18,9 +18,6 @@ app.use("/", authRoutes);
 connectDB().then(pool => {
     console.log('Database connected successfully');
 
-    // Define routes
-    app.use('/', require('./controller/user.controller'));
-
     // Start the server after successful database connection
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
