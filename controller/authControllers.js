@@ -68,6 +68,7 @@ const login = async (req, res) => {
         res.status(200).json({
           userId: existingUser.userId,
           email: existingUser.email,
+          name: existingUser.name,
           access_token: generateAccessToken(existingUser.userId),
         });
       } else {
