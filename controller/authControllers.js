@@ -26,6 +26,8 @@ const register = async (req, res) => {
     userId: uuidv4(),
     email,
     password: hashedPassword,
+    firstName,
+    username,
   };
   try {
     await createTable(userSchema);
