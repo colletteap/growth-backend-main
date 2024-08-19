@@ -8,13 +8,15 @@ const connectDB = require("./db/db");
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
 const port = process.env.PORT || 3000;
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 
+app.use(express.urlencoded({ extended: false }));
+
 app.use("/", authRoutes);
-app.use("/profile", profileRoutes);
+app.use("/", profileRoutes);
 
 // Connect to the database
 connectDB().then(pool => {
