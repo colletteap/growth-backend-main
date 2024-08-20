@@ -13,8 +13,8 @@ const generateAccessToken = (userId) => {
 };
 
 const register = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { email, password, firstName, username } = req.body;
+  if (!email || !password || !username || !firstName) {
     res
       .status(400)
       .json({ error: "Email or Password fields cannot be empty!" });

@@ -42,8 +42,22 @@ const insertRecord = (tableName, record) => {
   });
 };
 
+const updateRecord = (tableName, updates, column, value) => {
+  return new Promise((resolve, reject) => {
+    const query = `UPDATE ${tableName} SET ${updates} WHERE ${column} = ${value}`;
+    pool.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  })
+};
+
 module.exports = {
   createTable,
   checkRecordExists,
   insertRecord,
+  updateRecord
 };
