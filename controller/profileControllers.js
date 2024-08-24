@@ -1,5 +1,4 @@
 const { checkRecordExists, updateRecord } = require("../utils/sqlFunctions");
-const db = require ('../db/db.js');
 
 const updateProfile = async (req, res) => {
   try {
@@ -9,9 +8,13 @@ const updateProfile = async (req, res) => {
       req.user.userId
     );
 
+    if (!profile) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
     const updates = {
-      title: req.body.title || user.title,
-      bio: req.body.bio || user.bio,
+      title: req.body.title || profile.title,
+      bio: req.body.bio || profile.bio,
       ...req.body,
     };
 
@@ -23,6 +26,30 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const jwt = require("jsonwebtoken");
+
+const getUserData = async (req, res) => {
+  try {
+    const profile = await checkRecordExists("users", "userId", req.user.userId);
+
+    if (!profile) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Respond with the user's profile data
+    res.status(200).json({
+      userId: profile.userId,
+      firstName: profile.firstName,
+      email: profile.email,
+      title: profile.title,
+      bio: profile.bio,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   updateProfile,
+  getUserData, 
 };
