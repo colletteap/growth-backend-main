@@ -9,11 +9,11 @@ const {
 } = require("../utils/sqlFunctions");
 
 const generateAccessToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
+  return jwt.sign({ userId }, '355a051f38fe7efca1714b812c009ac93b20c255e78aa432e2e42726dc9b2a495423de641b18446f2409689dfc385cf6b59fbad6cb6bc268db6c75c9a69ba210', { expiresIn: "15m" });
 };
 
 const generateRefreshToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
+  return jwt.sign({ userId }, 'c2edd1ca0be94b07b3fd5d6a788256474a12690c8b4ce50a32502407fc5629bd9174d9ee96f87f0e0c00308ae66a1b7d868c96932706b832e1a8b51439964e3d', { expiresIn: "7d" });
 };
 
 
