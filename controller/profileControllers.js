@@ -1,4 +1,5 @@
 const { checkRecordExists, updateRecord } = require("../utils/sqlFunctions");
+const jwt = require("jsonwebtoken");
 
 const updateProfile = async (req, res) => {
   try {
@@ -19,14 +20,12 @@ const updateProfile = async (req, res) => {
     };
 
 
-    await updateRecord("users", updates, "userId", user.userId);
+    await updateRecord("users", updates, "userId", req.user.userId);
     res.json({ message: "Profile Updated Successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
-const jwt = require("jsonwebtoken");
 
 const getUserData = async (req, res) => {
   try {

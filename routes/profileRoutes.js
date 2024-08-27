@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { updateProfile } = require("../controller/profileControllers");
+const { updateProfile, getUserData } = require("../controller/profileControllers");
 const { requiresAuth } = require("../middlewares/authMiddleware");
 
 router.put(
@@ -9,5 +9,7 @@ router.put(
   requiresAuth,
   updateProfile
 );
+
+router.get("/profile/:userId", requiresAuth, getUserData);
 
 module.exports = router;
