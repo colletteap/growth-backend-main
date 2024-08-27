@@ -16,24 +16,6 @@ const generateRefreshToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
 };
 
-const insertToken = async (userId, token) => {
-  try {
-    const pool = await connectDB();
-    pool.query(
-      'INSERT INTO tokens (user_id, token) VALUES (?, ?)',
-      [userId, token],
-      (err, results) => {
-        if (err) {
-          console.error('Error inserting token:', err);
-          throw err;
-        }
-        console.log('Refresh token inserted successfully:', results.insertId);
-      }
-    );
-  } catch (error) {
-    console.error('Database error:', error);
-  }
-};
 
 const register = async (req, res) => {
   const { email, password, firstName, username } = req.body;
@@ -93,8 +75,6 @@ const login = async (req, res) => {
 
         const accessToken = generateAccessToken(existingUser.userId);
         const refreshToken = generateRefreshToken(existingUser.userId);
-    
-        await insertToken(existingUser.userId, refreshToken);
 
         res.status(200).json({
           userId: existingUser.userId,
@@ -114,25 +94,6 @@ const login = async (req, res) => {
   }
 };
 
-const deleteToken = async (token) => {
-  try {
-    const pool = await connectDB();
-    pool.query(
-      'DELETE FROM tokens WHERE token = ?',
-      [token],
-      (err, results) => {
-        if (err) {
-          console.error('Error deleting token:', err);
-          throw err;
-        }
-        console.log('Token deleted successfully:', results.affectedRows);
-      }
-    );
-  } catch (error) {
-    console.error('Database error:', error);
-  }
-};
-
 const logout = async (req, res) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -142,8 +103,7 @@ const logout = async (req, res) => {
   }
 
   try {
-    
-    await deleteToken(token);
+
     
     res.status(200).json({ message: "Logout successful" });
 
