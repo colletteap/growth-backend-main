@@ -7,6 +7,10 @@ const userSchema = `
       username VARCHAR (255),
       title VARCHAR (255),
       bio TEXT
+      yearsExperience VARCHAR (255)
+      education TEXT
+      contactInfo VARCHAR (255)
+      favBooks TEXT
   )
 `;
 

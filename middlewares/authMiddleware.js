@@ -5,6 +5,7 @@ const requiresAuth = async (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
 
   if (!authorizationHeader || !authorizationHeader.startsWith("Bearer")) {
+    console.error("No authorization header or incorrect format");
     return res.status(401).json({ error: "Not authorized, no token" });
   }
 
@@ -35,7 +36,7 @@ const requiresAuth = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error(error);
+    console.error("Token verification failed:", error.message);
     return res.status(401).json({ error: "Token verification failed" });
   }
 };
