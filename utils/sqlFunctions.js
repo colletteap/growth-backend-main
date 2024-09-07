@@ -42,30 +42,18 @@ const insertRecord = (tableName, record) => {
   });
 };
 
-const updateRecord = async (req, res) => {
-  try {
-    console.log("PUT /profile request received with data:", req.body);
+const updateRecord = (tableName, updates, column, value) => {
+  return new Promise((resolve, reject) => {
+    const query = `UPDATE ${tableName} SET ? WHERE ${column} = ?`;
 
-    const profile = await checkRecordExists("users", "userId", req.user.userId);
-
-    if (!profile) {
-      console.log("User not found for update:", req.user.userId);
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const updates = {
-      title: req.body.title || profile.title,
-      bio: req.body.bio || profile.bio,
-    };
-
-    console.log("Updating user with data:", updates);
-    await updateRecord("users", updates, "userId", req.user.userId);
-
-    res.status(200).json({ message: "Profile Updated Successfully" });
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ error: error.message });
-  }
+    pool.query(query, [updates, value], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
 };
 
 
@@ -73,5 +61,5 @@ module.exports = {
   createTable,
   checkRecordExists,
   insertRecord,
-  updateRecord
+  updateRecord,
 };

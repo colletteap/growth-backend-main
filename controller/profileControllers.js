@@ -16,7 +16,10 @@ const updateProfile = async (req, res) => {
     const updates = {
       title: req.body.title || profile.title,
       bio: req.body.bio || profile.bio,
-      ...req.body,
+      yearsExperience: req.body.yearsExperience || profile.yearsExperience,
+      education: req.body.education || profile.education,
+      contactInfo: req.body.contactInfo || profile.contactInfo,
+      favBooks: req.body.favBooks || profile.favBooks,
     };
 
 
@@ -29,6 +32,7 @@ const updateProfile = async (req, res) => {
 
 const getUserData = async (req, res) => {
   try {
+    console.log("User ID:", req.user.userId);
     const profile = await checkRecordExists("users", "userId", req.user.userId);
 
     if (!profile) {
@@ -42,8 +46,12 @@ const getUserData = async (req, res) => {
       email: profile.email,
       title: profile.title,
       bio: profile.bio,
+      yearsExperience: profile.yearsExperience,
+      education: profile.education,
+      contactInfo: profile.contactInfo,
     });
   } catch (error) {
+    console.error("Error fetching profile data:", error);
     res.status(500).json({ error: error.message });
   }
 };
