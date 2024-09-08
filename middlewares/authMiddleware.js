@@ -24,15 +24,15 @@ const requiresAuth = async (req, res, next) => {
       return res.status(401).json({ error: "Invalid token" });
     }
 
-    const user = await checkRecordExists("users", "userId", decoded.userId);
+    const userExists = await checkRecordExists("users", "userId", decoded.userId);
 
-    if (!user) {
+    if (!userExists) {
       console.error("User not found in the database");
       return res.status(401).json({ error: "User not found" });
     }
 
-    req.user = user;
-    delete req.user.password;
+    // Attach only the userId to req.user
+    req.user = { userId: decoded.userId };
 
     next();
   } catch (error) {
