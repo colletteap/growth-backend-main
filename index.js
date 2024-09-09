@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", authRoutes);
 app.use("/", profileRoutes);
+app.use('/', skillRoutes);
 
 // Connect to the database
 connectDB().then(pool => {
