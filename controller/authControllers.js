@@ -44,6 +44,7 @@ const register = async (req, res) => {
       res.status(201).json({ message: "User created successfully!" });
     }
   } catch (error) {
+    console.error('Registration failed:', error);
     res.status(500).json({ error: error.message });
   }
 };

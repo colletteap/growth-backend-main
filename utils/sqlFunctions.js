@@ -1,6 +1,12 @@
-const mysql = require("mysql");
-const config = require("../db/config");
-const pool = mysql.createPool(config);
+const mysql = require("mysql2");
+const config = require("../db/config")[process.env.NODE_ENV || 'development']; 
+
+const pool = mysql.createPool({
+  host: config.host,
+  user: config.user,
+  password: config.password,
+  database: config.database,
+});
 
 const createTable = (schema) => {
   return new Promise((resolve, reject) => {
@@ -55,7 +61,6 @@ const updateRecord = (tableName, updates, column, value) => {
     });
   });
 };
-
 
 module.exports = {
   createTable,
