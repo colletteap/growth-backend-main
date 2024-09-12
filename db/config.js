@@ -1,4 +1,4 @@
-require('dotenv').config(); // To use .env variables
+require('dotenv').config(); 
 
 const config = {
   development: {
@@ -6,7 +6,7 @@ const config = {
     user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
-    dialect: 'mysql',
+    dialect: 'mysql2',
   },
   test: {
     dialect: 'sqlite',
@@ -17,7 +17,7 @@ const config = {
     user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
-    dialect: 'mysql',
+    dialect: 'mysql2',
   },
 };
 
