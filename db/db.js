@@ -1,6 +1,6 @@
-const mysql = require('mysql2'); // Use mysql2
+const mysql = require('mysql2'); 
 const config = require('./config');
-const Sequelize = require('sequelize'); // For testing with Sequelize
+const Sequelize = require('sequelize'); 
 
 const connectDB = () => {
   // Only connect to MySQL in development and production
@@ -11,11 +11,12 @@ const connectDB = () => {
       pool.getConnection((err, connection) => {
         if (err) {
           console.error("Database connection failed:", err.message);
-          reject(err); // Reject the promise with the error
+          reject(err); 
         } else {
           console.log("Connected to MySQL database");
-          connection.release(); // Release the connection back to the pool
-          resolve(pool); // Resolve the promise with the connection pool
+          connection.release(); 
+          
+          resolve(pool);
         }
       });
     });
