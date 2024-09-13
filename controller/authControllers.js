@@ -13,7 +13,7 @@ const generateAccessToken = (userId) => {
 };
 
 const generateRefreshToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
+  return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: "1d" });
 };
 
 
@@ -96,6 +96,7 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+  console.log('Logout function called');
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 

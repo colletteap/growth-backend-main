@@ -62,9 +62,39 @@ const updateRecord = (tableName, updates, column, value) => {
   });
 };
 
+const getRecord = (tableName, column, value) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM ${tableName} WHERE ${column} = ?`;
+    
+    pool.query(query, [value], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results.length ? results[0] : null);
+      }
+    });
+  });
+};
+
+const deleteRecord = (tableName, column, value) => {
+  return new Promise((resolve, reject) => {
+    const query = `DELETE FROM ${tableName} WHERE ${column} = ?`;
+    
+    pool.query(query, [value], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
 module.exports = {
   createTable,
   checkRecordExists,
   insertRecord,
   updateRecord,
+  getRecord,
+  deleteRecord
 };
