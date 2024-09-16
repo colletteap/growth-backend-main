@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const updateProfile = async (req, res) => {
   try {
+    console.log('Updating profile for user:', req.user.userId);
     const profile = await checkRecordExists(
       "users",
       "userId",
