@@ -50,6 +50,7 @@ const getUserData = async (req, res) => {
       yearsExperience: profile.yearsExperience,
       education: profile.education,
       contactInfo: profile.contactInfo,
+      favBooks: profile.favBooks,
     });
   } catch (error) {
     console.error("Error fetching profile data:", error);
