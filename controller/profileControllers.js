@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const updateProfile = async (req, res) => {
   try {
     console.log('Updating profile for user:', req.user.userId);
+    console.log('Uploaded file:', req.file);
     const profile = await checkRecordExists(
       "users",
       "userId",
@@ -21,6 +22,7 @@ const updateProfile = async (req, res) => {
       education: req.body.education || profile.education,
       contactInfo: req.body.contactInfo || profile.contactInfo,
       favBooks: req.body.favBooks || profile.favBooks,
+      profilePicture: req.file ? `/uploads/${req.file.filename}` : profile.profileImage,
     };
 
 
@@ -51,6 +53,7 @@ const getUserData = async (req, res) => {
       education: profile.education,
       contactInfo: profile.contactInfo,
       favBooks: profile.favBooks,
+      profilePicture: profile.profilePicture,
     });
   } catch (error) {
     console.error("Error fetching profile data:", error);

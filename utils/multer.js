@@ -21,30 +21,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// Create multer instance
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-// Controller to handle profile update with image upload
-const updateProfile = async (req, res) => {
-  try {
-    const profile = await checkRecordExists('users', 'userId', req.user.userId);
-
-    if (!profile) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const updates = {
-      title: req.body.title || profile.title,
-      bio: req.body.bio || profile.bio,
-      yearsExperience: req.body.yearsExperience || profile.yearsExperience,
-      education: req.body.education || profile.education,
-      contactInfo: req.body.contactInfo || profile.contactInfo,
-      favBooks: req.body.favBooks || profile.favBooks,
-      profileImage: req.file ? `/uploads/${req.file.filename}` : profile.profileImage, // Save image path
-    };
-
-    await updateRecord('users', updates, 'userId', req.user.userId);
-    res.json({ message: 'Profile Updated Successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+module.exports = upload; // Ensure this is correctly exporting the upload instance

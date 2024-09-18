@@ -8,6 +8,7 @@ const connectDB = require("./db/db");
 const app = express();
 app.use(cors());
 app.use(express.json());
+const path = require('path');
 
 const port = process.env.PORT || 3001;
 const authRoutes = require("./routes/authRoutes");
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/", authRoutes);
 app.use("/", profileRoutes);
 // app.use('/', skillRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to the database
 connectDB().then(pool => {

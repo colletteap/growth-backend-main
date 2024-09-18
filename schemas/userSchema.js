@@ -11,6 +11,7 @@ const userSchema = `
       education TEXT
       contactInfo VARCHAR (255)
       favBooks TEXT
+      profilePicture VARCHAT (255)
   )
 `;
 
