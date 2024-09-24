@@ -24,4 +24,4 @@ const fileFilter = (req, file, cb) => {
 // Create multer instance
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-module.exports = upload; // Ensure this is correctly exporting the upload instance
+module.exports = upload; 

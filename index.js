@@ -10,15 +10,16 @@ app.use(cors());
 app.use(express.json());
 const path = require('path');
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const skillRoutes = require("./routes/skillRoutes");
 
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", authRoutes);
 app.use("/", profileRoutes);
-// app.use('/', skillRoutes);
+app.use("/", skillRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to the database

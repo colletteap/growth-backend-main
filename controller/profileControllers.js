@@ -22,7 +22,7 @@ const updateProfile = async (req, res) => {
       education: req.body.education || profile.education,
       contactInfo: req.body.contactInfo || profile.contactInfo,
       favBooks: req.body.favBooks || profile.favBooks,
-      profilePicture: req.file ? `/uploads/${req.file.filename}` : profile.profileImage,
+      profilePicture: req.file ? `/uploads/${req.file.filename}` : profile.profilePicture,
     };
 
 

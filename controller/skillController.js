@@ -1,29 +1,27 @@
-const db = require('../db/db');
+const db = require('../db/db'); // Import your database connection
 
-const getSkills = (req, res) => {
-  const query = 'SELECT * FROM skills';
-  db.query(query, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.json(results);
-  });
-};
+const getSkills = async (req, res) => {
+  try {
+    const query = 'SELECT * FROM skills';
+    const pool = await db(); // Await the connection to the pool
 
-const addSkill = (req, res) => {
-    const { skill, details, userId } = req.body; // Data needs to come from frontend
-  
-    if (!skill || !details || !userId) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
-  
-    const query = 'INSERT INTO skills (skill, details, userId) VALUES (?, ?, ?)';
-    db.query(query, [skill, details, userId], (err, result) => {
+    pool.query(query, (err, results) => {
       if (err) {
+        console.error("Database query error:", err);
         return res.status(500).json({ error: err.message });
       }
-      res.status(201).json({ message: 'Skill added successfully', skillId: result.insertId });
+
+      if (results.length === 0) {
+        return res.status(404).json({ error: "No skills found" });
+      }
+
+      console.log("Fetched skills:", results);
+      res.status(200).json(results); // Respond with results
     });
-  };
-  
-  module.exports = { getSkills, addSkill };
+  } catch (error) {
+    console.error("Error connecting to the database:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { getSkills };

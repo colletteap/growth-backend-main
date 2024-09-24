@@ -1,9 +1,7 @@
-// routes/skillRoutes.js
 const express = require('express');
 const router = express.Router();
-const skillController = require('../controllers/skillController');
+const { getSkills } = require('../controller/skillController');
 
-router.get('/skills', skillController.getSkills);
-router.post('/skills', skillController.addSkill);
+router.get('/skills', getSkills);
 
 module.exports = router;
