@@ -14,12 +14,14 @@ const port = process.env.PORT || 3000;
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const skillRoutes = require("./routes/skillRoutes");
+const adviceLandingRoutes = require("./routes/adviceLandingRoutes");
 
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", authRoutes);
 app.use("/", profileRoutes);
 app.use("/", skillRoutes);
+// app.use("/", adviceLandingRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to the database

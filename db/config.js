@@ -9,6 +9,9 @@ const config = {
     dialect: 'mysql',
   },
   test: {
+    database: 'sqlite::memory:', 
+    user: null, 
+    password: null,
     dialect: 'sqlite',
     storage: ':memory:', // In-memory SQLite for testing
   },

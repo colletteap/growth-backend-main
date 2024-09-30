@@ -1,9 +1,9 @@
-const db = require('../db/db'); // Import your database connection
+const { connectDB } = require('../db/db'); // database connection
 
 const getSkills = async (req, res) => {
   try {
     const query = 'SELECT * FROM skills';
-    const pool = await db(); // Await the connection to the pool
+    const pool = await connectDB(); // Await connection to the pool
 
     pool.query(query, (err, results) => {
       if (err) {
