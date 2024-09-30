@@ -1,27 +1,31 @@
-const { connectDB } = require('../db/db'); // database connection
+const connectDB = require('../db/db'); // Updated DB connection file
 
 const getSkills = async (req, res) => {
   try {
-    const query = 'SELECT * FROM skills';
-    const pool = await connectDB(); // Await connection to the pool
+    const pool = await connectDB(); // Await the connection pool
 
-    pool.query(query, (err, results) => {
-      if (err) {
-        console.error("Database query error:", err);
-        return res.status(500).json({ error: err.message });
-      }
+    if (pool) {
+      // Perform MySQL query only if the connection pool exists
+      pool.query('SELECT * FROM skills', (err, results) => {
+        if (err) {
+          console.error("Error fetching skills:", err.message);
+          return res.status(500).json({ error: 'Database query error' });
+        }
 
-      if (results.length === 0) {
-        return res.status(404).json({ error: "No skills found" });
-      }
+        if (results.length === 0) {
+          return res.status(404).json({ error: "No skills found" });
+        }
 
-      console.log("Fetched skills:", results);
-      res.status(200).json(results); // Respond with results
-    });
+        res.status(200).json(results);
+      });
+    } else {
+      res.status(500).json({ error: 'No database connection' });
+    }
   } catch (error) {
-    console.error("Error connecting to the database:", error);
-    res.status(500).json({ error: error.message });
+    console.error("Error during database connection:", error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 module.exports = { getSkills };

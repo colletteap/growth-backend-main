@@ -1,11 +1,11 @@
-const { connectDB } = require('../db/db'); // database connection
+const connectDB = require('../db/db'); // database connection
 
 const getAdviceLanding = async (req, res) => {
   try {
     const query = 'SELECT * FROM adviceLanding';
     const pool = await connectDB(); // Await connection to the pool
 
-    const [results] = await pool.query(query); // Use async/await instead of callback
+    const [results] = await pool.promise().query(query); // Use promise-based query
 
     if (results.length === 0) {
       return res.status(404).json({ error: "No advice found" });
