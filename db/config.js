@@ -7,6 +7,9 @@ const config = {
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
     dialect: 'mysql',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
   },
   test: {
     database: 'sqlite::memory:', 
@@ -21,6 +24,9 @@ const config = {
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
     dialect: 'mysql',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
   },
 };
 
