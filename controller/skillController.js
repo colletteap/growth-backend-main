@@ -80,4 +80,33 @@ const skillInfo = async (req, res) => {
   }
 };
 
-module.exports = { getSkills, skillSearch, skillInfo };
+
+// Add a new skill post (storing in details field and logging userId)
+const addSkillPost = async (req, res) => {
+  console.log(req.body);
+  const { skill, details, userId } = req.body;
+
+  if (!skill || !details || !userId) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    const pool = await connectDB();
+    pool.query(
+      'INSERT INTO skillInfo (skill, details, userId) VALUES (?, ?, ?)',
+      [skill, details, userId],
+      (err, results) => {
+        if (err) {
+          console.error('Error adding skill post:', err.message);
+          return res.status(500).json({ error: 'Database query error' });
+        }
+        res.status(201).json({ message: 'Skill post added successfully' });
+      }
+    );
+  } catch (error) {
+    console.error('Database connection error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+module.exports = { getSkills, skillSearch, skillInfo, addSkillPost };
