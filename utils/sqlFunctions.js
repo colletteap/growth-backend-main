@@ -76,7 +76,7 @@ const getRecord = (tableName, column, value) => {
   });
 };
 
-const getAllRecords = (tableName, column, value) => {
+const getSpecificRecords = (tableName, column, value) => {
   return new Promise((resolve, reject) => {
     const query = `SELECT * FROM ${tableName} WHERE ${column} = ?`;
 
@@ -89,6 +89,20 @@ const getAllRecords = (tableName, column, value) => {
     });
   });
 };
+
+const getAllRecords = (tableName) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM ${tableName}`;  // No WHERE clause, just fetch all records
+    pool.query(query, (err, results) => {
+      if (err) {
+        reject(err);  // Reject if an error occurs
+      } else {
+        resolve(results);  // Return all the records
+      }
+    });
+  });
+};
+
 
 const deleteRecord = (tableName, column, value) => {
   return new Promise((resolve, reject) => {
@@ -111,5 +125,6 @@ module.exports = {
   updateRecord,
   getRecord,
   deleteRecord,
-  getAllRecords
+  getAllRecords,
+  getSpecificRecords
 };
