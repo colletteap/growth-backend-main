@@ -1,5 +1,4 @@
-const connectDB = require('../db/db'); // Updated DB connection file
-const {  insertRecord, checkRecordExists, getRecord, getAllRecords
+const {  insertRecord, getRecord, getAllRecords
 } = require("../utils/sqlFunctions");
 
 const getSkills = async (req, res) => {

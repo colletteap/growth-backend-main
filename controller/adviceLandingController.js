@@ -1,6 +1,4 @@
-const connectDB = require('../db/db'); // database connection
-const {  insertRecord, checkRecordExists, getRecord, getAllRecords
-} = require("../utils/sqlFunctions");
+const {  getAllRecords} = require("../utils/sqlFunctions");
 
 const getAdviceLanding = async (req, res) => {
   try {
