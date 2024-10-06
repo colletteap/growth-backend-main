@@ -1,4 +1,4 @@
-const {  insertRecord, getRecord, getAllRecords
+const {  insertRecord, getRecord, getAllRecords, getSpecificRecords
 } = require("../utils/sqlFunctions");
 
 const getSkills = async (req, res) => {
@@ -17,14 +17,16 @@ const getSkills = async (req, res) => {
 
 const skillSearch = async (req, res) => {
   try {
-await getRecord('skillsSearch', 'skill', skill);
-res.status(201).json({ message: "Skill search successful!" });
-} catch (error) {
-console.error('Database connection error:', error);
-res.status(500).json({ error: 'Internal server error' });
-}
+    const records = await getAllRecords('skillsSearch'); 
+    if (records.length === 0) {
+      return res.status(404).json({ error: 'No skills found' });
+    }
+    res.status(200).json(records); 
+  } catch (error) {
+    console.error('Error fetching all skills:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
-
 const skillInfo = async (req, res) => {
   const { skill } = req.query;
 
