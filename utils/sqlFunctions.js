@@ -92,12 +92,12 @@ const getSpecificRecords = (tableName, column, value) => {
 
 const getAllRecords = (tableName) => {
   return new Promise((resolve, reject) => {
-    const query = `SELECT * FROM ${tableName}`;  // No WHERE clause, just fetch all records
+    const query = `SELECT * FROM ${tableName}`;  
     pool.query(query, (err, results) => {
       if (err) {
-        reject(err);  // Reject if an error occurs
+        reject(err);  
       } else {
-        resolve(results);  // Return all the records
+        resolve(results);  
       }
     });
   });
