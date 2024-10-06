@@ -1,24 +1,19 @@
 const connectDB = require('../db/db'); // database connection
+const {  insertRecord, checkRecordExists, getRecord, getAllRecords
+} = require("../utils/sqlFunctions");
 
 const getAdviceLanding = async (req, res) => {
   try {
-    const query = 'SELECT * FROM adviceLanding';
-    const pool = await connectDB(); // Await connection to the pool
-
-    const [results] = await pool.promise().query(query); // Use promise-based query
-
-    if (results.length === 0) {
-      return res.status(404).json({ error: "No advice found" });
+    const records = await getAllRecords('adviceLanding'); 
+    if (records.length === 0) {
+      return res.status(404).json({ error: 'No advice found' });
     }
-
-    console.log("Fetched advice:", results);
-    res.status(200).json(results); // Respond with results
+    res.status(200).json(records); 
   } catch (error) {
-    console.error("Error connecting to the database:", error);
-    res.status(500).json({ error: error.message });
+    console.error('Error fetching all advice:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 const getAskAdviceCardData = async (req, res) => {
   try {
     const pool = await connectDB();
