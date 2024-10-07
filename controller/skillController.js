@@ -75,7 +75,7 @@ const updateSkillInfo = async (req, res) => {
   }
 
   try {
-        const existingRecord = await getSpecificRecords('skillInfo', 'skillId', skillId);
+        const existingRecord = await getSpecificRecords('skillInfo', 'id', skillId);
     
     if (existingRecord.length === 0) {
       return res.status(404).json({ error: 'Skill not found' });
@@ -86,7 +86,7 @@ const updateSkillInfo = async (req, res) => {
     }
 
     const updates = { details };
-    await updateRecord('skillInfo', updates, 'skillId', skillId);
+    await updateRecord('skillInfo', updates, 'id', skillId);
 
     res.status(200).json({ message: 'Skill updated successfully' });
   } catch (error) {
