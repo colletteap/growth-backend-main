@@ -1,4 +1,4 @@
-const {  insertRecord, getRecord, getAllRecords, getSpecificRecords
+const {  insertRecord, updateRecord, getAllRecords, getSpecificRecords
 } = require("../utils/sqlFunctions");
 
 const getSkills = async (req, res) => {
@@ -66,4 +66,34 @@ const addSkillPost = async (req, res) => {
   }
 };
 
-module.exports = { getSkills, skillSearch, skillInfo, addSkillPost };
+const updateSkillInfo = async (req, res) => {
+  const { details, userId } = req.body;
+  const skillId = req.params.id; 
+
+  if (!skillId || !details || !userId) {
+    return res.status(400).json({ error: 'Missing required fields: skillId, details, or userId' });
+  }
+
+  try {
+        const existingRecord = await getSpecificRecords('skillInfo', 'skillId', skillId);
+    
+    if (existingRecord.length === 0) {
+      return res.status(404).json({ error: 'Skill not found' });
+    }
+
+        if (existingRecord[0].userId !== userId) {
+      return res.status(403).json({ error: 'Unauthorized: You can only update your own posts' });
+    }
+
+    const updates = { details };
+    await updateRecord('skillInfo', updates, 'skillId', skillId);
+
+    res.status(200).json({ message: 'Skill updated successfully' });
+  } catch (error) {
+    console.error('Error updating skill:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+module.exports = { getSkills, skillSearch, skillInfo, addSkillPost, updateSkillInfo };
