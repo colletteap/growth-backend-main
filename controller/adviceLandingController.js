@@ -1,4 +1,4 @@
-const {  getAllRecords} = require("../utils/sqlFunctions");
+const {  getAllRecords, insertRecord } = require("../utils/sqlFunctions");
 
 const getAdviceLanding = async (req, res) => {
   try {
@@ -24,5 +24,22 @@ const getAskAdviceCardData = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+// const addQuestion = async (req, res) => {
+//   console.log(req.body);
+//   const { cardId, question, userId } = req.body;
+
+//   if (!cardId || !question || !userId) {
+//     return res.status(400).json({ error: 'Missing required fields' });
+//   }
+
+//   try {
+//     await insertRecord('askadvicecarddata', req.body);
+//     res.status(201).json({ message: "Skill post successful!" });
+//   } catch (error) {
+//     console.error('Database connection error:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
 
 module.exports = { getAdviceLanding, getAskAdviceCardData };

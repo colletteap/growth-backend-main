@@ -1,4 +1,4 @@
-const {  insertRecord, updateRecord, getAllRecords, getSpecificRecords
+const {  insertRecord, updateRecord, getAllRecords, getSpecificRecords, deleteRecord
 } = require("../utils/sqlFunctions");
 
 const getSkills = async (req, res) => {
@@ -96,4 +96,32 @@ const updateSkillInfo = async (req, res) => {
 };
 
 
-module.exports = { getSkills, skillSearch, skillInfo, addSkillPost, updateSkillInfo };
+const deleteSkillPost = async (req, res) => {
+  const skillId = req.params.id; 
+  const { userId } = req.body;
+
+  if (!skillId || !userId) {
+    return res.status(400).json({ error: 'Missing required fields: skillId or userId' });
+  }
+
+  try {
+       const existingRecord = await getSpecificRecords('skillInfo', 'id', skillId);
+    if (existingRecord.length === 0) {
+      return res.status(404).json({ error: 'Skill post not found' });
+    }
+
+    if (existingRecord[0].userId !== userId) {
+      return res.status(403).json({ error: 'Unauthorized: You can only delete your own posts' });
+    }
+
+    await deleteRecord('skillInfo', 'id', skillId);
+
+    res.status(200).json({ message: 'Skill post deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting skill post:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+module.exports = { getSkills, skillSearch, skillInfo, addSkillPost, updateSkillInfo, deleteSkillPost };
