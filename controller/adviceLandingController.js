@@ -28,7 +28,17 @@ const getAskAdviceCardData = async (req, res) => {
   }
 };
 
-// Function to add a question
+// Questions
+const getQuestions = async (req, res) => {
+  try {
+    const questions = await getAllRecords('askadvicecarddata');
+    res.status(200).json(questions);
+  } catch (error) {
+    console.error('Error fetching questions:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 const addQuestion = async (req, res) => {
   const { cardId, question, userId } = req.body;
 
@@ -37,17 +47,42 @@ const addQuestion = async (req, res) => {
   }
 
   try {
-    await insertRecord('askadvicecarddata', { cardId, question, userId });
+    await insertRecord('askadvicecarddata', { cardId, question, userId, type: 'question' });
     res.status(201).json({ message: "Question added successfully!" });
   } catch (error) {
-    console.error('Error inserting question:', error.message);
+    console.error('Error adding question:', error.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-// Function to delete a question
+const updateQuestion = async (req, res) => {
+  const { question, userId } = req.body;
+  const { id } = req.params;
+
+  if (!id || !question || !userId) {
+    return res.status(400).json({ error: 'Missing required fields: question ID, question, or userId' });
+  }
+
+  try {
+    const existingRecord = await getSpecificRecords('askadvicecarddata', 'id', id);
+    if (existingRecord.length === 0) {
+      return res.status(404).json({ error: 'Question not found' });
+    }
+
+    if (existingRecord[0].userId !== userId) {
+      return res.status(403).json({ error: 'Unauthorized: You can only update your own questions' });
+    }
+
+    await updateRecord('askadvicecarddata', { question }, 'id', id);
+    res.status(200).json({ message: 'Question updated successfully' });
+  } catch (error) {
+    console.error('Error updating question:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 const deleteQuestion = async (req, res) => {
-  const { id } = req.params; 
+  const { id } = req.params;
   const { userId } = req.body;
 
   if (!id || !userId) {
@@ -72,39 +107,23 @@ const deleteQuestion = async (req, res) => {
   }
 };
 
-// Function to update a question
-const updateQuestion = async (req, res) => {
-  const { question, userId } = req.body;
-  const { id } = req.params; // Question ID from the URL params
+// Comments
+const getComments = async (req, res) => {
+  const { cardId } = req.query;
 
-  if (!id || !question || !userId) {
-    return res.status(400).json({ error: 'Missing required fields: question ID, question, or userId' });
+  if (!cardId) {
+    return res.status(400).json({ error: 'Missing cardId' });
   }
 
   try {
-    const existingRecord = await getSpecificRecords('askadvicecarddata', 'id', id);
-    if (existingRecord.length === 0) {
-      return res.status(404).json({ error: 'Question not found' });
-    }
-
-    // Ensure the user can only update their own question
-    if (existingRecord[0].userId !== userId) {
-      return res.status(403).json({ error: 'Unauthorized: You can only update your own questions' });
-    }
-
-    const updates = { question };
-    await updateRecord('askadvicecarddata', updates, 'id', id);
-
-    res.status(200).json({ message: 'Question updated successfully' });
+    const comments = await getSpecificRecords('comments', 'cardId', cardId);
+    res.status(200).json(comments);
   } catch (error) {
-    console.error('Error updating question:', error.message);
+    console.error('Error fetching comments:', error.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-// ========== Comment Functions ==========
-
-// Function to add a comment
 const addComment = async (req, res) => {
   const { cardId, comment, userId } = req.body;
 
@@ -113,7 +132,7 @@ const addComment = async (req, res) => {
   }
 
   try {
-    await insertRecord('askadvicecarddata', { cardId, comment, userId, type: 'comment' });
+    await insertRecord('comments', { cardId, comment, userId });
     res.status(201).json({ message: "Comment added successfully!" });
   } catch (error) {
     console.error('Error adding comment:', error.message);
@@ -121,17 +140,16 @@ const addComment = async (req, res) => {
   }
 };
 
-// Function to update a comment
 const updateComment = async (req, res) => {
   const { comment, userId } = req.body;
-  const { id } = req.params; 
+  const { id } = req.params;
 
   if (!id || !comment || !userId) {
     return res.status(400).json({ error: 'Missing required fields: comment ID, comment, or userId' });
   }
 
   try {
-    const existingRecord = await getSpecificRecords('askadvicecarddata', 'id', id);
+    const existingRecord = await getSpecificRecords('comments', 'id', id);
     if (existingRecord.length === 0) {
       return res.status(404).json({ error: 'Comment not found' });
     }
@@ -140,9 +158,7 @@ const updateComment = async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized: You can only update your own comments' });
     }
 
-    const updates = { comment };
-    await updateRecord('askadvicecarddata', updates, 'id', id);
-
+    await updateRecord('comments', { comment }, 'id', id);
     res.status(200).json({ message: 'Comment updated successfully' });
   } catch (error) {
     console.error('Error updating comment:', error.message);
@@ -150,9 +166,8 @@ const updateComment = async (req, res) => {
   }
 };
 
-// Function to delete a comment
 const deleteComment = async (req, res) => {
-  const { id } = req.params; 
+  const { id } = req.params;
   const { userId } = req.body;
 
   if (!id || !userId) {
@@ -160,7 +175,7 @@ const deleteComment = async (req, res) => {
   }
 
   try {
-    const existingRecord = await getSpecificRecords('askadvicecarddata', 'id', id);
+    const existingRecord = await getSpecificRecords('comments', 'id', id);
     if (existingRecord.length === 0) {
       return res.status(404).json({ error: 'Comment not found' });
     }
@@ -177,29 +192,10 @@ const deleteComment = async (req, res) => {
   }
 };
 
-// Function to get all comments for a specific cardId
-const getComments = async (req, res) => {
-  const { cardId } = req.query;
-
-  if (!cardId) {
-    return res.status(400).json({ error: 'Missing required field: cardId' });
-  }
-
-  try {
-    const records = await getSpecificRecords('askadvicecarddata', 'cardId', cardId);
-    if (records.length === 0) {
-      return res.status(404).json({ error: 'No comments found' });
-    }
-    res.status(200).json(records); 
-  } catch (error) {
-    console.error('Error fetching comments:', error.message);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
 module.exports = {
   getAdviceLanding,
   getAskAdviceCardData,
+  getQuestions,
   addQuestion,
   deleteQuestion,
   updateQuestion,
