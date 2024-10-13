@@ -40,14 +40,14 @@ const getQuestions = async (req, res) => {
 };
 
 const addQuestion = async (req, res) => {
-  const { cardId, question, userId } = req.body;
+  const { question, userId } = req.body;
 
-  if (!cardId || !question || !userId) {
-    return res.status(400).json({ error: 'Missing required fields: cardId, question, or userId' });
+  if (!question || !userId) {
+    return res.status(400).json({ error: 'Missing required fields: question, or userId' });
   }
 
   try {
-    await insertRecord('askadvicecarddata', { cardId, question, userId, type: 'question' });
+    await insertRecord('askadvicecarddata', { question, userId, type: 'question' });
     res.status(201).json({ message: "Question added successfully!" });
   } catch (error) {
     console.error('Error adding question:', error.message);
@@ -109,14 +109,14 @@ const deleteQuestion = async (req, res) => {
 
 // Comments
 const getComments = async (req, res) => {
-  const { cardId } = req.query;
+  const { id } = req.query;
 
-  if (!cardId) {
-    return res.status(400).json({ error: 'Missing cardId' });
+  if (!id) {
+    return res.status(400).json({ error: 'Missing id' });
   }
 
   try {
-    const comments = await getSpecificRecords('comments', 'cardId', cardId);
+    const comments = await getSpecificRecords('comments', 'id', id);
     res.status(200).json(comments);
   } catch (error) {
     console.error('Error fetching comments:', error.message);
@@ -125,14 +125,14 @@ const getComments = async (req, res) => {
 };
 
 const addComment = async (req, res) => {
-  const { cardId, comment, userId } = req.body;
+  const {comment, userId } = req.body;
 
-  if (!cardId || !comment || !userId) {
-    return res.status(400).json({ error: 'Missing required fields: cardId, comment, or userId' });
+  if (!comment || !userId) {
+    return res.status(400).json({ error: 'Missing required fields: comment, or userId' });
   }
 
   try {
-    await insertRecord('comments', { cardId, comment, userId });
+    await insertRecord('comments', { comment, userId });
     res.status(201).json({ message: "Comment added successfully!" });
   } catch (error) {
     console.error('Error adding comment:', error.message);
