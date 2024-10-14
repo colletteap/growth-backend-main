@@ -21,13 +21,13 @@ router.get('/askAdviceCardData', getAskAdviceCardData);
 // Routes for handling questions (require authorization)
 router.get('/questions', getQuestions);   
 router.post('/questions', requiresAuth, addQuestion);    
-router.put('/questions/:id', requiresAuth, updateQuestion);   
-router.delete('/questions/:id', requiresAuth, deleteQuestion); 
+router.put('/questions/:cardId', requiresAuth, updateQuestion);   
+router.delete('/questions/:cardId', requiresAuth, deleteQuestion); 
 
 // Routes for handling comments (require authorization)
-router.get('/comments', requiresAuth, getComments);  
+router.get('/comments', getComments);  
 router.post('/comments', requiresAuth, addComment);   
-router.put('/comments/:id', requiresAuth, updateComment);   
-router.delete('/comments/:id', requiresAuth, deleteComment); 
+router.put('/comments/:cardId', requiresAuth, updateComment);   
+router.delete('/comments/:cardId', requiresAuth, deleteComment); 
 
 module.exports = router;
