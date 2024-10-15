@@ -27,7 +27,7 @@ router.delete('/questions/:cardId', requiresAuth, deleteQuestion);
 // Routes for handling comments (require authorization)
 router.get('/comments', getComments);  
 router.post('/comments', requiresAuth, addComment);   
-router.put('/comments/:cardId', requiresAuth, updateComment);   
-router.delete('/comments/:cardId', requiresAuth, deleteComment); 
+router.put('/comments/:id', requiresAuth, updateComment);   
+router.delete('/comments/:id', requiresAuth, deleteComment); 
 
 module.exports = router;

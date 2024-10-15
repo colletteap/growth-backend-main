@@ -144,7 +144,7 @@ const addComment = async (req, res) => {
 const updateComment = async (req, res) => {
   const { comment, userId } = req.body;
   const { id } = req.params;
-
+  console.log("commentId from params:", id);
   if (!id || !comment || !userId) {
     return res.status(400).json({ error: 'Missing required fields: comment ID, comment, or userId' });
   }
@@ -170,7 +170,7 @@ const updateComment = async (req, res) => {
 const deleteComment = async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
-
+  console.log("commentId from params:", id);
   if (!id || !userId) {
     return res.status(400).json({ error: 'Missing required fields: comment ID or userId' });
   }
