@@ -1,4 +1,4 @@
-const { checkRecordExists, updateRecord } = require("../utils/sqlFunctions");
+const { checkRecordExists, updateRecord, getRecordCount } = require("../utils/sqlFunctions");
 const jwt = require("jsonwebtoken");
 
 const updateProfile = async (req, res) => {
@@ -42,12 +42,19 @@ const getUserData = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    const skillsSharedCount = await getRecordCount("skillinfo", "userId", req.user.userId);
+    const questionsAskedCount = await getRecordCount("askadvicecarddata", "userId", req.user.userId);
+    const questionsAnsweredCount = await getRecordCount("comments", "userId", req.user.userId);
+
     // Respond with the user's profile data
     res.status(200).json({
       userId: profile.userId,
       firstName: profile.firstName,
       email: profile.email,
       title: profile.title,
+      skillsShared: skillsSharedCount,      
+      questionsAsked: questionsAskedCount,   
+      questionsAnswered: questionsAnsweredCount, 
       bio: profile.bio,
       yearsExperience: profile.yearsExperience,
       education: profile.education,

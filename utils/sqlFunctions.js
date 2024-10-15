@@ -118,6 +118,20 @@ const deleteRecord = (tableName, column, value) => {
   });
 };
 
+const getRecordCount = (table, column, value) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT COUNT(*) as count FROM ${table} WHERE ${column} = ?`;
+
+    pool.query(query, [value], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results[0].count); // Resolve the count
+      }
+    });
+  });
+};
+
 module.exports = {
   createTable,
   checkRecordExists,
@@ -126,5 +140,6 @@ module.exports = {
   getRecord,
   deleteRecord,
   getAllRecords,
-  getSpecificRecords
+  getSpecificRecords,
+  getRecordCount
 };
