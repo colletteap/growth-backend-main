@@ -16,6 +16,7 @@ const getBlogLanding = async (req, res) => {
 const getBlogPageData = async (req, res) => {
   try {
     const records = await getAllRecords('blogPageData'); 
+    console.log("Records fetched:", records);
     if (records.length === 0) {
       return res.status(404).json({ error: 'No blogs found' });
     }
