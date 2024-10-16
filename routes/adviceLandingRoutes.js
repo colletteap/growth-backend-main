@@ -10,7 +10,7 @@ const {
   addComment,
   updateComment,
   deleteComment,
-  getComments
+  getCommentsByCardId
 } = require('../controller/adviceLandingController');
 const { requiresAuth } = require("../middlewares/authMiddleware");
 
@@ -25,7 +25,7 @@ router.put('/questions/:cardId', requiresAuth, updateQuestion);
 router.delete('/questions/:cardId', requiresAuth, deleteQuestion); 
 
 // Routes for handling comments (require authorization)
-router.get('/comments', getComments);  
+router.get('/comments', getCommentsByCardId);  
 router.post('/comments', requiresAuth, addComment);   
 router.put('/comments/:id', requiresAuth, updateComment);   
 router.delete('/comments/:id', requiresAuth, deleteComment); 

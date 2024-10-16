@@ -114,15 +114,15 @@ const deleteQuestion = async (req, res) => {
 };
 
 // Comments
-const getComments = async (req, res) => {
-  try {
-    const comments = await getAllRecords('comments');
-    res.status(200).json(comments);
-  } catch (error) {
-    console.error('Error fetching comments:', error.message);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
+// const getComments = async (req, res) => {
+//   try {
+//     const comments = await getAllRecords('comments');
+//     res.status(200).json(comments);
+//   } catch (error) {
+//     console.error('Error fetching comments:', error.message);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
 
 const addComment = async (req, res) => {
   const { cardId, comment, userId } = req.body;
@@ -139,6 +139,24 @@ const addComment = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+const getCommentsByCardId = async (req, res) => {
+  const { cardId } = req.query; // Assuming the frontend sends the cardId as a query parameter
+  console.log('Fetching comments for cardId:', cardId);
+  
+  if (!cardId) {
+    return res.status(400).json({ error: 'Missing cardId parameter' });
+  }
+
+  try {
+    const comments = await getSpecificRecords('comments', 'cardId', cardId); // Fetch only comments with the same cardId
+    res.status(200).json(comments);
+  } catch (error) {
+    console.error('Error fetching comments:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 
 const updateComment = async (req, res) => {
@@ -203,5 +221,5 @@ module.exports = {
   addComment,
   updateComment,
   deleteComment,
-  getComments
+  getCommentsByCardId
 };
