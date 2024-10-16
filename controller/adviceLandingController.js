@@ -141,7 +141,7 @@ const addComment = async (req, res) => {
 };
 
 const getCommentsByCardId = async (req, res) => {
-  const { cardId } = req.query; // Assuming the frontend sends the cardId as a query parameter
+  const { cardId } = req.query; 
   console.log('Fetching comments for cardId:', cardId);
   
   if (!cardId) {
@@ -156,8 +156,6 @@ const getCommentsByCardId = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-
 
 const updateComment = async (req, res) => {
   const { comment, userId } = req.body;
