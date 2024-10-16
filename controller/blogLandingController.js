@@ -3,6 +3,7 @@ const { getAllRecords} = require("../utils/sqlFunctions");
 const getBlogLanding = async (req, res) => {
   try {
     const records = await getAllRecords('blogLanding'); 
+    console.log("Records fetched:", records);
     if (records.length === 0) {
       return res.status(404).json({ error: 'No blogs found' });
     }
