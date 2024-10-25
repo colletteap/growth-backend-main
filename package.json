@@ -6,8 +6,7 @@
     "start-dev": "nodemon index.js",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all --config=db/config.json && npm run migrate",
     "migrate": "npx sequelize-cli db:migrate --config=db/config.json",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
-    "pretest": "cross-env NODE_ENV=test jest",
+    "test": "jest --testTimeout=10000",
     "server": "cross-env NODE_ENV=development nodemon index.js"
   },
   "keywords": [],

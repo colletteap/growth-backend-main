@@ -2,25 +2,28 @@ const mysql = require('mysql2');
 const config = require('./config');
 
 const connectDB = () => {
-  if (process.env.NODE_ENV !== 'test') {
-    return new Promise((resolve, reject) => {
-      const pool = mysql.createPool(config[process.env.NODE_ENV]);
-
-      pool.getConnection((err, connection) => {
-        if (err) {
-          console.error("Database connection failed:", err.message);
-          reject(err); 
-        } else {
-          console.log("Connected to MySQL database");
-          connection.release(); 
-          resolve(pool);
-        }
-      });
+  return new Promise((resolve, reject) => {
+    const pool = mysql.createPool({
+      host: process.env.HOST,
+      user: process.env.USER,
+      password: process.env.PASSWORD,
+      database: process.env.NODE_ENV === 'test' ? process.env.DATABASE_TEST : process.env.DATABASE, // Add this line to select the database
+      charset: 'utf8mb4', 
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0
     });
-  } else {
-    console.log('Running tests with SQLite in-memory database');
-    return Promise.resolve(); // No MySQL connection during tests
-  }
+    pool.getConnection((err, connection) => {
+      if (err) {
+        console.error("Database connection failed:", err.message);
+        reject(err);
+      } else {
+        console.log("Connected to MySQL database");
+        connection.release();
+        resolve(pool);
+      }
+    });
+  });
 };
 
-module.exports = connectDB; // Export connectDB function
+module.exports = connectDB;
