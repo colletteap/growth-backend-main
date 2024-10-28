@@ -28,18 +28,21 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Connect to the database
-connectDB().then(pool => {
-    console.log('Database connected successfully');
+(async () => {
+    try {
+        const pool = await connectDB();
+        console.log('Database connected successfully:', pool);
 
-    if (process.env.NODE_ENV !== 'test') {
-        app.listen(port, () => {
-            console.log(`Server running on port ${port}`);
-        });
+        if (process.env.NODE_ENV !== 'test') {
+            app.listen(port, () => {
+                console.log(`Server running on port ${port}`);
+            });
+        }
+    } catch (err) {
+        console.error('Failed to connect to the database. Exiting...', err);
+        process.exit(1); 
     }
-}).catch(err => {
-    console.error('Failed to connect to the database. Exiting...', err);
-    process.exit(1); 
-});
+})();
 
 // Export the app for testing
 module.exports = app;

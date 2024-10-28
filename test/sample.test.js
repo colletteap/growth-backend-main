@@ -4,10 +4,21 @@ const app = require('../index');
 
 let pool; // Define a global variable for the pool
 
+const deleteAllData = async (pool) => {
+  await pool.query('DELETE FROM users');
+  // Add additional delete statements for other tables as needed
+};
+
 beforeAll(async () => {
   process.env.NODE_ENV = 'test'; // Set the environment to test
   pool = await connectDB(); // Connect to the database
   console.log('Database connected:', pool);
+});
+
+beforeEach(async () => {
+  if (pool) {
+    await deleteAllData(pool);
+  }
 });
 
 afterAll(async () => {
