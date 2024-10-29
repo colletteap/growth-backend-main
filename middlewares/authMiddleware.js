@@ -28,7 +28,7 @@ const requiresAuth = async (req, res, next) => {
 
     if (!userExists) {
       console.error("User not found in the database");
-      return res.status(401).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     // Attach only the userId to req.user
