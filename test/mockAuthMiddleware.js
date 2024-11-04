@@ -1,5 +1,5 @@
 module.exports = (req, res, next) => {
-    req.user = { email: 'mockuser@example.com' };
+    req.user = { email: 'test@example.com' };
     next();
   };
   

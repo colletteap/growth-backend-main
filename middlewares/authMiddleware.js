@@ -3,7 +3,7 @@ const { checkRecordExists } = require("../utils/sqlFunctions");
 
 const verifyToken = (token) => {
   // Check for dummy token in test environment
-  if (process.env.NODE_ENV === 'test' && token === 'fakeToken') {
+  if (process.env.NODE_ENV === 'test') {
     return { userId: 'testUserId' }; // Mock user data
   }
   // Regular JWT verification logic

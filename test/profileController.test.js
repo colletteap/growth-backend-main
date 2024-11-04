@@ -3,12 +3,10 @@ const request = require('supertest');
 const app = require('../index');
 
 let pool;
+let token;
 
 const deleteAllData = async (pool) => {
   await pool.query('DELETE FROM users');
-  await pool.query('DELETE FROM skillinfo');
-  await pool.query('DELETE FROM askadvicecarddata');
-  await pool.query('DELETE FROM comments');
 };
 
 // Create missing tables if they don't exist
@@ -21,45 +19,14 @@ const createTables = async (pool) => {
       firstName VARCHAR(255),
       username VARCHAR(255)
     )
-  `);
-
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS skillinfo (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      skill VARCHAR(255) NOT NULL,
-      details TEXT,
-      userId VARCHAR(255) NOT NULL
-    )
-  `);
-
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS askadvicecarddata (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      question TEXT NOT NULL,
-      userId VARCHAR(255)
-    )
-  `);
-
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS comments (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      comment TEXT NOT NULL,
-      userId VARCHAR(255),
-      cardId INT
-    )
-  `);
+  `); 
 };
 
 // Seed initial data for tests
 const seedData = async (pool) => {
   await pool.query(`
     INSERT INTO users (userId, email, password, firstName, username)
-    VALUES (1,'profileuser@example.com', 'hashedPassword123', 'ProfileUser', 'profileuser')
-  `);
-
-  await pool.query(`
-    INSERT INTO skillinfo (skill, details, userId)
-    VALUES ('JavaScript', 'Test Skill', 1)
+    VALUES ('testUserId','test@example.com', 'password123', 'Test', 'testuser')
   `);
 };
 
@@ -68,6 +35,24 @@ beforeAll(async () => {
   pool = await connectDB();
   console.log('Database connected:', pool);
   await createTables(pool); // Ensure tables are created
+
+  await request(app)
+  .post('/register')
+  .send({
+    email: 'test@example.com',
+    password: 'password123',
+    firstName: 'Test',
+    username: 'testuser',
+  });
+
+const loginRes = await request(app)
+  .post('/login')
+  .send({
+    email: 'test@example.com',
+    password: 'password123',
+  });
+
+token = `Bearer ${loginRes.body.accessToken}`; // Store the token for use in tests
 });
 
 beforeEach(async () => {
@@ -84,17 +69,15 @@ afterAll(async () => {
 });
 
 describe('Profile Controller Endpoints', () => {
-  const fakeToken = 'fakeToken'; // Use the mock token directly
-
-  describe('GET /profile', () => {
+   describe('GET /profile', () => {
     it('should retrieve user profile data', async () => {
       const res = await request(app)
         .get('/profile')
-        .set('Authorization', `Bearer ${fakeToken}`);
+        .set('Authorization', token);
 
       expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty('email', 'profileuser@example.com');
-      expect(res.body).toHaveProperty('firstName', 'ProfileUser');
+      expect(res.body).toHaveProperty('email', 'test@example.com');
+      expect(res.body).toHaveProperty('firstName', 'Test');
     });
   });
 
@@ -102,7 +85,7 @@ describe('Profile Controller Endpoints', () => {
     it('should update the user profile', async () => {
       const res = await request(app)
         .put('/profile')
-        .set('Authorization', `Bearer ${fakeToken}`)
+        .set('Authorization', token)
         .send({
           title: 'New Title',
           bio: 'Updated Bio',
@@ -118,11 +101,11 @@ describe('Profile Controller Endpoints', () => {
 
     it('should return 404 if user is not found', async () => {
       // Delete the user to simulate a missing user
-      await pool.query('DELETE FROM users WHERE email = ?', ['profileuser@example.com']);
+      await pool.query('DELETE FROM users WHERE email = ?', ['test@example.com']);
 
       const res = await request(app)
         .put('/profile')
-        .set('Authorization', `Bearer ${fakeToken}`)
+        .set('Authorization', token)
         .send({
           title: 'New Title',
         });
