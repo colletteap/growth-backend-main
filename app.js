@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 const path = require('path');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const skillRoutes = require("./routes/skillRoutes");
