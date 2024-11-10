@@ -1,13 +1,14 @@
 {
   "name": "growth-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start-dev": "nodemon index.js",
+    "start": "node app",
+    "start-dev": "nodemon app.js",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all --config=db/config.json && npm run migrate",
     "migrate": "npx sequelize-cli db:migrate --config=db/config.json",
     "test": "jest --testTimeout=10000",
-    "server": "cross-env NODE_ENV=development nodemon index.js"
+    "server": "cross-env NODE_ENV=development nodemon app.js"
   },
   "keywords": [],
   "author": "",
