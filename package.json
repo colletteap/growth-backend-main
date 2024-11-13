@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node app",
+    "start": "node app.js",
     "start-dev": "nodemon app.js",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all --config=db/config.json && npm run migrate",
     "migrate": "npx sequelize-cli db:migrate --config=db/config.json",
