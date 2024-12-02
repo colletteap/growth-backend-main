@@ -1,4 +1,5 @@
-const { getAllRecords, insertRecord, getSpecificRecords, updateRecord, deleteRecord } = require("../utils/sqlFunctions");
+const { createTable, getAllRecords, insertRecord, getSpecificRecords, updateRecord, deleteRecord } = require("../utils/sqlFunctions");
+const adviceSchema = require('./schemas/adviceSchema');
 
 // Function to get advice landing data
 const getAdviceLanding = async (req, res) => {
@@ -40,6 +41,7 @@ const getQuestions = async (req, res) => {
 };
 
 const addQuestion = async (req, res) => {
+  await createTable(adviceSchema);
   const { question, userId } = req.body;
 
   if (!question || !userId) {
