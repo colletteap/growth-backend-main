@@ -1,5 +1,5 @@
 const { createTable, getAllRecords, insertRecord, getSpecificRecords, updateRecord, deleteRecord } = require("../utils/sqlFunctions");
-const adviceSchema = require('./schemas/adviceSchema');
+const adviceSchema = require('../schemas/adviceSchema');
 
 // Function to get advice landing data
 const getAdviceLanding = async (req, res) => {
