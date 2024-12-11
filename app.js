@@ -6,7 +6,27 @@ const cors = require('cors');
 const connectDB = require("./db/db");
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+    origin: (origin, callback) => {
+      if (process.env.NODE_ENV === 'development') {
+        callback(null, true); 
+      } else if (process.env.NODE_ENV === 'production') {
+        const allowedOrigins = [
+          'https://colletteap.github.io',
+          'http://growth.ca-central-1.elasticbeanstalk.com',
+        ];
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }
+    },
+    credentials: true, 
+  };
+
+app.use(cors(corsOptions));
 app.use(express.json());
 const path = require('path');
 
