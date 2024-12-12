@@ -4,6 +4,7 @@ dotenv.config();
 
 const cors = require('cors');
 const connectDB = require("./db/db");
+const path = require('path');
 
 const app = express();
 
@@ -28,7 +29,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-const path = require('path');
 
 const port = process.env.PORT || 8080;
 const authRoutes = require("./routes/authRoutes");
