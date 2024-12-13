@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 const config = require('./config');
 
-const connectDB = () => {
+const connectDB = async() => {
   const pool = mysql.createPool({
     host: process.env.HOST,
     user: process.env.USER,
@@ -13,7 +13,17 @@ const connectDB = () => {
     queueLimit: 0
   });
 
-  return pool.promise(); // Return the promise-based pool
+  const promisePool = pool.promise();
+
+  try {
+    const [rows] = await promisePool.query('SELECT 1');
+    console.log('Database connection successful:', rows);
+  } catch (err) {
+    console.error('Database connection failed:', err.message);
+    throw err;
+  }
+
+  return promisePool;
 };
 
 module.exports = connectDB;
