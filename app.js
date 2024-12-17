@@ -8,27 +8,27 @@ const path = require('path');
 
 const app = express();
 
-// const corsOptions = {
-//     origin: (origin, callback) => {
-//       if (process.env.NODE_ENV === 'development') {
-//         callback(null, true); 
-//       } else if (process.env.NODE_ENV === 'production') {
-//         const allowedOrigins = [
-//           'https://colletteap.github.io',
-//           'http://growth.ca-central-1.elasticbeanstalk.com',
-//         ];
-//         if (allowedOrigins.includes(origin)) {
-//           callback(null, true);
-//         } else {
-//           callback(new Error('Not allowed by CORS'));
-//         }
-//       }
-//     },
-//     credentials: true, 
-//   };
+const corsOptions = {
+    origin: (origin, callback) => {
+      if (process.env.NODE_ENV === 'development') {
+        callback(null, true); 
+      } else if (process.env.NODE_ENV === 'production') {
+        const allowedOrigins = [
+          'https://colletteap.github.io',
+          'http://growth.ca-central-1.elasticbeanstalk.com',
+        ];
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }
+    },
+    credentials: true, 
+  };
 
-// app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 const port = process.env.PORT || 8080;
