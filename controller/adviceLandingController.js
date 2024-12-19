@@ -3,7 +3,7 @@ const { getAllRecords, insertRecord, getSpecificRecords, updateRecord, deleteRec
 // Function to get advice landing data
 const getAdviceLanding = async (req, res) => {
   try {
-    const records = await getAllRecords('adviceLanding'); 
+    const records = await getAllRecords('advicelanding'); 
     if (records.length === 0) {
       return res.status(404).json({ error: 'No advice found' });
     }
@@ -17,7 +17,7 @@ const getAdviceLanding = async (req, res) => {
 // Function to get all questions (askAdviceCardData)
 const getAskAdviceCardData = async (req, res) => {
    try {
-    const records = await getAllRecords('askAdviceCardData'); 
+    const records = await getAllRecords('askadvicecarddata'); 
     if (records.length === 0) {
       return res.status(404).json({ error: 'No data found' });
     }

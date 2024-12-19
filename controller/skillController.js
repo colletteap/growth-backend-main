@@ -17,7 +17,7 @@ const getSkills = async (req, res) => {
 
 const skillSearch = async (req, res) => {
   try {
-    const records = await getAllRecords('skillsSearch'); 
+    const records = await getAllRecords('skillssearch'); 
     if (records.length === 0) {
       return res.status(404).json({ error: 'No skills found' });
     }
@@ -35,7 +35,7 @@ const skillInfo = async (req, res) => {
   }
 
   try {
-    const records = await getSpecificRecords('skillInfo', 'skill', skill); 
+    const records = await getSpecificRecords('skillinfo', 'skill', skill); 
     if (records.length === 0) {
       return res.status(404).json({ error: 'No skills found' });
     }
@@ -58,7 +58,7 @@ const addSkillPost = async (req, res) => {
   }
 
   try {
-    await insertRecord('skillInfo', req.body);
+    await insertRecord('skillinfo', req.body);
     res.status(201).json({ message: "Skill post successful!" });
   } catch (error) {
     console.error('Database connection error:', error);
@@ -86,7 +86,7 @@ const updateSkillInfo = async (req, res) => {
     }
 
     const updates = { details };
-    await updateRecord('skillInfo', updates, 'id', skillId);
+    await updateRecord('skillinfo', updates, 'id', skillId);
 
     res.status(200).json({ message: 'Skill updated successfully' });
   } catch (error) {
@@ -105,7 +105,7 @@ const deleteSkillPost = async (req, res) => {
   }
 
   try {
-       const existingRecord = await getSpecificRecords('skillInfo', 'id', skillId);
+       const existingRecord = await getSpecificRecords('skillinfo', 'id', skillId);
     if (existingRecord.length === 0) {
       return res.status(404).json({ error: 'Skill post not found' });
     }
@@ -114,7 +114,7 @@ const deleteSkillPost = async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized: You can only delete your own posts' });
     }
 
-    await deleteRecord('skillInfo', 'id', skillId);
+    await deleteRecord('skillinfo', 'id', skillId);
 
     res.status(200).json({ message: 'Skill post deleted successfully' });
   } catch (error) {

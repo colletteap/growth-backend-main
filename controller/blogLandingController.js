@@ -2,7 +2,7 @@ const { getAllRecords} = require("../utils/sqlFunctions");
 
 const getBlogLanding = async (req, res) => {
   try {
-    const records = await getAllRecords('blogLanding'); 
+    const records = await getAllRecords('bloglanding'); 
     console.log("Records fetched:", records);
     if (records.length === 0) {
       return res.status(404).json({ error: 'No blogs found' });
@@ -16,7 +16,7 @@ const getBlogLanding = async (req, res) => {
 
 const getBlogPageData = async (req, res) => {
   try {
-    const records = await getAllRecords('blogPageData'); 
+    const records = await getAllRecords('blogpagedata'); 
     console.log("Records fetched:", records);
     if (records.length === 0) {
       return res.status(404).json({ error: 'No blogs found' });
