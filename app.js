@@ -30,11 +30,16 @@ const app = express();
 // app.use(cors(corsOptions));     THIS CAUSES INTERNAL SERVER ERROR ON EB
 
 app.use(cors({
-  origin: "https://colletteap.github.io"
+  origin: ["https://colletteap.github.io, https://growthnl.com"]
 }));
 app.use(express.json());
 
 const port = process.env.PORT || 8080;
+
+app.get('/', (req, res) => {
+    res.redirect('https://colletteap.github.io/growth/');
+});
+
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const skillRoutes = require("./routes/skillRoutes");
