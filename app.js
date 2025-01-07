@@ -36,12 +36,13 @@ app.use(express.json());
 
 const port = process.env.PORT || 80;
 
+app.get('/health', (req, res) => {
+    res.status(200).send('OK'); // Simple response for health checks on target groups load balancer
+});
+
+
 app.get('/', (req, res) => {
-    if (req.headers['user-agent'].includes('ELB')) {
-        res.status(200).send('OK'); // Allow load balancer health checks
-    } else {
-        res.redirect('https://colletteap.github.io/growth/');
-    }
+    res.redirect('https://colletteap.github.io/growth/');
 });
 
 const authRoutes = require("./routes/authRoutes");
