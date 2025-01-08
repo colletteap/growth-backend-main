@@ -9,7 +9,9 @@ const path = require('path');
 const app = express();
 
 app.use(cors({
-  origin: ["https://colletteap.github.io", "https://growthnl.com"]
+  origin: ["https://colletteap.github.io", "https://growthnl.com"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
 app.use(express.json());
 
