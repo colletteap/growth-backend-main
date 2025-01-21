@@ -15,7 +15,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3306;
 
 app.get('/health', (req, res) => {
     res.status(200).send('OK'); // Simple response for health checks on target groups load balancer

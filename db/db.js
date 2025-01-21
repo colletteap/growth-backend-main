@@ -7,6 +7,7 @@ const connectDB = async() => {
     user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.NODE_ENV === 'test' ? process.env.DATABASE_TEST : process.env.DATABASE,
+    port: process.env.PORT || 3306,
     charset: 'utf8mb4',
     waitForConnections: true,
     connectionLimit: 10,
