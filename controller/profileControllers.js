@@ -27,7 +27,9 @@ const updateProfile = async (req, res) => {
 
 
     await updateRecord("users", updates, "userId", req.user.userId);
-    res.json({ message: "Profile Updated Successfully" });
+    res.json({ message: "Profile Updated Successfully", 
+      profilePicture: `${req.protocol}://${req.get("host")}${updates.profilePicture}`,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
