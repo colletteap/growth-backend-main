@@ -17,19 +17,15 @@ app.use(express.json());
 
 const port = process.env.PORT || 3306;
 
-app.get('/health', (req, res) => {
-    res.status(200).send('OK'); // Simple response for health checks on target groups load balancer
-});
-
-app.get('/', (req, res) => {
-    res.redirect('https://colletteap.github.io/growth/');
-});
-
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const skillRoutes = require("./routes/skillRoutes");
 const adviceLandingRoutes = require("./routes/adviceLandingRoutes");
 const blogLandingRoutes = require("./routes/blogLandingRoutes");
+
+app.get('/', (req, res) => {
+    res.redirect('https://colletteap.github.io/growth/');
+});
 
 app.use(express.urlencoded({ extended: false }));
 
