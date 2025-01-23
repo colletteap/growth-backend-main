@@ -46,6 +46,10 @@ const getUserData = async (req, res) => {
     const questionsAskedCount = await getRecordCount("askadvicecarddata", "userId", req.user.userId);
     const questionsAnsweredCount = await getRecordCount("comments", "userId", req.user.userId);
 
+    const profilePictureUrl = profile.profilePicture
+      ? `${req.protocol}://${req.get("host")}${profile.profilePicture}`
+      : `${req.protocol}://${req.get("host")}/images/avatarplaceholder.png`;
+
     // Respond with the user's profile data
     res.status(200).json({
       userId: profile.userId,
@@ -60,7 +64,7 @@ const getUserData = async (req, res) => {
       education: profile.education,
       contactInfo: profile.contactInfo,
       favBooks: profile.favBooks,
-      profilePicture: profile.profilePicture,
+      profilePicture: profilePictureUrl,
     });
   } catch (error) {
     console.error("Error fetching profile data:", error);
