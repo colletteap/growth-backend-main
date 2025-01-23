@@ -47,8 +47,8 @@ const getUserData = async (req, res) => {
     const questionsAnsweredCount = await getRecordCount("comments", "userId", req.user.userId);
 
     const profilePictureUrl = profile.profilePicture
-      ? `${req.protocol}://${req.get("host")}${profile.profilePicture}`
-      : `${req.protocol}://${req.get("host")}/images/avatarplaceholder.png`;
+    ? `https://${req.get("host")}${profile.profilePicture}` // Use HTTPS
+    : `https://${req.get("host")}/images/avatarplaceholder.png`;
 
     // Respond with the user's profile data
     res.status(200).json({
