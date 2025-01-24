@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const updateProfile = async (req, res) => {
   try {
+    console.log("File uploaded:, req.file");
     console.log('Updating profile for user:', req.user.userId);
     console.log('Uploaded file:', req.file);
     const profile = await checkRecordExists(
@@ -25,6 +26,7 @@ const updateProfile = async (req, res) => {
       profilePicture: req.file ? `/uploads/${req.file.filename}` : profile.profilePicture,
     };
 
+      console.log("Updates to be saved:", updates);
 
     await updateRecord("users", updates, "userId", req.user.userId);
     res.json({ message: "Profile Updated Successfully", 

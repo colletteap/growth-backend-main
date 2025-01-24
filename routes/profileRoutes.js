@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const multer = require('multer');
+const multer = require('../utils/multer');
 
 const { updateProfile, getUserData } = require("../controller/profileControllers");
 const { requiresAuth } = require("../middlewares/authMiddleware");
